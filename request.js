@@ -895,7 +895,8 @@ Request.prototype.start = function () {
     method: self.method,
     href: self.uri.href,
     proxy: (self.proxy && { href: self.proxy.href }) || undefined,
-    httpVersion: '1.1'
+    httpVersion: '1.1',
+    headers: this.headers
   }
 
   // We have a method named auth, which is completely different from the http.request
@@ -1226,7 +1227,8 @@ Request.prototype.onRequestResponse = function (response) {
 
   self._reqResInfo.response = {
     statusCode: response.statusCode,
-    httpVersion: response.httpVersion
+    httpVersion: response.httpVersion,
+    headers: response.headers
   }
 
   if (self.timing) {
