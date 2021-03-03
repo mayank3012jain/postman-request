@@ -467,6 +467,27 @@ tape('should preserve referer header set in the initial request when removeRefer
   })
 })
 
+tape('there should be headers available on _debug object', function (t) {
+  request({
+    uri: s.url + '/temp',
+    jar: jar,
+    followAllRedirects: true,
+    removeRefererHeader: true,
+    headers: { cookie: 'foo=bar' }
+  }, function (err, res, body) {
+    t.ifError(err, 'the request did not fail')
+    t.ok(res, 'the request did not fail')
+
+    var debug = res.request._debug
+    t.ok(debug[0].request.headers, 'first call has request headers')
+    t.ok(debug[0].response.headers, 'first call has response headers')
+    t.ok(debug[1].request.headers, 'second call has request headers')
+    t.ok(debug[1].response.headers, 'second call has response headers')
+
+    t.end()
+  })
+})
+
 tape('should use same agent class on redirect', function (t) {
   var agent
   var calls = 0
